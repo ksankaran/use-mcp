@@ -11,13 +11,7 @@ interface McpServer {
 }
 
 // MCP Connection wrapper for a single server
-function McpConnection({
-  server,
-  onConnectionUpdate,
-}: {
-  server: McpServer
-  onConnectionUpdate: (serverId: string, data: any) => void
-}) {
+function McpConnection({ server, onConnectionUpdate }: { server: McpServer; onConnectionUpdate: (serverId: string, data: any) => void }) {
   // Use the MCP hook with the server URL
   const connection = useMcp({
     url: server.url,
@@ -54,27 +48,7 @@ const McpServerModal: React.FC<McpServerModalProps> = ({ isOpen, onClose, onTool
     const stored = localStorage.getItem('mcpServerToolCounts')
     return stored ? JSON.parse(stored) : {}
   })
-  const [transportType, setTransportType] = useState<'auto' | 'http' | 'sse'>(() => {
-    const stored = localStorage.getItem('mcpTransportType')
-    return (stored as 'auto' | 'http' | 'sse') || 'http'
-  })
   const [newServerTransportType, setNewServerTransportType] = useState<'auto' | 'http' | 'sse'>('http')
-
-  // Helper to cycle through transport types
-  const cycleTransportType = () => {
-    setTransportType((current) => {
-      switch (current) {
-        case 'auto':
-          return 'http'
-        case 'http':
-          return 'sse'
-        case 'sse':
-          return 'auto'
-        default:
-          return 'auto'
-      }
-    })
-  }
 
   // Helper to cycle through new server transport types
   const cycleNewServerTransportType = () => {
@@ -105,8 +79,8 @@ const McpServerModal: React.FC<McpServerModalProps> = ({ isOpen, onClose, onTool
 
   // Save transport type to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('mcpTransportType', transportType)
-  }, [transportType])
+    localStorage.setItem('mcpTransportType', newServerTransportType)
+  }, [newServerTransportType])
 
   useEffect(() => {
     if (isOpen) {

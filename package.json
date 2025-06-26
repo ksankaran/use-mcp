@@ -29,6 +29,9 @@
     "build:site": "npx @axodotdev/oranda build",
     "deploy:site": "npx wrangler deploy"
   },
+  "dependencies": {
+    "strict-url-sanitise": "^0.0.1"
+  },
   "devDependencies": {
     "@axodotdev/oranda": "^0.6.5",
     "@modelcontextprotocol/sdk": "^1.13.1",
